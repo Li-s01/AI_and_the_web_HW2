@@ -60,10 +60,10 @@ def crawl_and_index():
                         # Links sammeln
                         for link in soup.find_all("a", href=True):
                             href = link["href"]
-                            if href.startswith(prefix) and href not in visited:
-                                stack.append(href)
+                            #href.startswith(prefix) and href not in visited:
+                            stack.append(prefix + href)     # prefix + page1.html u.ä.
 
-                        visited.add(url)
+                        visited.add(url) 
                 except Exception as e:
                     print(f"Fehler beim Abrufen der URL {url}: {e}")
 
