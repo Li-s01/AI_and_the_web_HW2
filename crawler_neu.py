@@ -15,7 +15,7 @@ def create_index():
         os.mkdir(index_dir)
 
         schema = Schema(
-            url=ID(stored=True, unique=True),  # Eindeutige URL
+            url=ID(stored=True, unique=True), # Eindeutige URL
             title=TEXT(stored=True),           # Titel der Seite
             content=TEXT                       # Inhalt der Seite
         )
