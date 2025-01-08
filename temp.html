@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Search Engine</title>
+        <style>
+            body {
+                background-image: url('https://images.pexels.com/photos/1809644/pexels-photo-1809644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'); /* Korrekte Syntax */
+                background-size: cover; /* scaling image to cover whole page */
+                background-position: center; /* putting image central */
+                background-repeat: no-repeat; /* no repition of the image */
+                height: 100vh; /* makes sure that background has full height of screen */
+                margin: 0; /* gets rid of standard margin in browser */
+                overflow: hidden; /* prevents scrolling problems */
+                font-family: Arial, sans-serif; /* font */
+                color: white; /* color of writing */
+                text-align: center; /* text is central on horizontal axis */
+                display: flex; /* Flexbox activated */
+                justify-content: center; /* Horizontal centralizing */
+                align-items: center; /* vertical centralizing */
+                flex-direction: column; /* makes sure that the content is vertically listed */
+            }
+
+            h1 {
+                font-size: 70px;
+                margin-bottom: 2px; /* distance between titel and document */
+            }
+
+            form {
+                margin-top: 80px; /* distance above document */
+            }
+
+            input[type="text"] {
+                padding: 15px;
+                width: 600px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            button {
+                padding: 10px 20px;
+                border: none;
+                background-color: #007BFF;
+                color: white;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Search Engine</h1>
+        <form action="/search" method="post">
+            <input type="text" name="query" placeholder="search term" required>
+            <button type="submit">Search</button>
+        </form>
+    </body>
+</html>
