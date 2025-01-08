@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Suchergebnisse</title>
+</head>
+<body>
+    <h1>Suchergebnisse für: {{ query }}</h1>
+    <ul>
+        {% for result in results %}
+            <li><a href="{{ result }}">{{ result }}</a></li>
+        {% endfor %}
+    </ul>
+    <a href="/">Zurück zur Suche</a>
+</body>
+</html>
