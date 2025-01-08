@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 from whoosh.index import open_dir
 from whoosh.qparser import QueryParser
 import os
@@ -7,7 +7,7 @@ import re
 
 app = Flask(__name__)
 
-# Funktion zum Überprüfen des Index
+# checking if index exists
 def get_index():
     index_dir = "indexdir"
     if os.path.exists(index_dir):
@@ -15,93 +15,31 @@ def get_index():
     else:
         raise FileNotFoundError("Whoosh-Index not found. Start the crawler first.")
 
-# Startseite mit Suchformular
+# home page of search engine with search field
 @app.route('/')
 def index():
-    return """
-  <!DOCTYPE html>
-<html>
-<head>
-    <title>Search Engine</title>
-    <style>
-        body {
-            background-image: url('https://images.pexels.com/photos/1809644/pexels-photo-1809644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'); /* Korrekte Syntax */
-            background-size: cover; /* Bild skaliert, um den gesamten Bereich zu füllen */
-            background-position: center; /* Bild wird zentriert */
-            background-repeat: no-repeat; /* Bild wird nicht wiederholt */
-            height: 100vh; /* Stellt sicher, dass der Hintergrund die volle Höhe des Bildschirms einnimmt */
-            margin: 0; /* Entfernt den Standardabstand des Browsers */
-            overflow: hidden; /* Verhindert, dass es Scrollprobleme gibt */
-            font-family: Arial, sans-serif; /* Schriftart einstellen */
-            color: white; /* Textfarbe anpassen */
-            text-align: center; /* Text wird horizontal zentriert */
-            display: flex; /* Flexbox aktiviert */
-            justify-content: center; /* Horizontale Zentrierung */
-            align-items: center; /* Vertikale Zentrierung */
-            flex-direction: column; /* Stellt sicher, dass der Inhalt vertikal gestapelt wird */
-        }
-
-        h1 {
-            font-size: 70px;
-            margin-bottom: 2px; /* Abstand zwischen Titel und Formular */
-        }
-
-        form {
-            margin-top: 80px; /* Abstand oberhalb des Formulars */
-        }
-
-        input[type="text"] {
-            padding: 15px;
-            width: 600px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        button {
-            padding: 10px 20px;
-            border: none;
-            background-color: #007BFF;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <h1>Search Engine</h1>
-    <form action="/search" method="post">
-        <input type="text" name="query" placeholder="search term" required>
-        <button type="submit">Search</button>
-    </form>
-</body>
-</html>
+    return render_template('temp.html')
 
 
-
-    """
-
-# Funktion zum Extrahieren des vollständigen Satzes mit dem Suchbegriff 
+# extracting full sentence with searched word 
 def extract_sentence(text, query):
     pattern = r'([^.]*?{}[^.]*\.)'.format(re.escape(query)) 
     matches = re.findall(pattern, text, re.IGNORECASE) 
     return matches[0] if matches else "No relevant sentence found."
 
-# Suchroute, die den Suchbegriff verarbeitet und Ergebnisse anzeigt
+# search route that uses searched word and shows information
 @app.route('/search', methods=['POST'])
 def search():
-    query = request.form.get('query')  # Suchbegriff
+    query = request.form.get('query')  # searched word input
     try:
         ix = get_index()
+        # searching index
         with ix.searcher() as searcher:
             query_obj = QueryParser("content", ix.schema).parse(query)
             results = searcher.search(query_obj)
-
-            # HTML-Ausgabe
+            # HTML-results
             results_html = f"<h1>Search results for: {query}</h1><ul>"
+        
             for result in results:
                 url = result["url"]
                 title = result["title"]

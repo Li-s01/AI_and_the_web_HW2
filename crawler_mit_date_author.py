@@ -5,37 +5,37 @@ from whoosh.fields import Schema, TEXT, ID, DATETIME
 from datetime import datetime
 import os
 
-# Basis-URL für die Website
+# Basis-URL for the website
 prefix = 'https://vm009.rz.uos.de/crawl/'
 start_url = prefix + 'index.html'
 
-# Funktion zum Erstellen des Index-Verzeichnisses und Schema
+# creating index if not already existing, and schema
 def create_index():
     index_dir = "indexdir"
     if not os.path.exists(index_dir):
         os.mkdir(index_dir)
 
         schema = Schema(
-            url=ID(stored=True, unique=True), # Eindeutige URL
-            title=TEXT(stored=True),           # Titel der Seite
-            content=TEXT(stored=True),         # Inhalt der Seite
-            date=DATETIME(stored=True),
-            author=TEXT(stored=True)
+            url=ID(stored=True, unique=True),  # URL
+            title=TEXT(stored=True),           # title
+            content=TEXT(stored=True),         # content
+            date=DATETIME(stored=True),        # date
+            author=TEXT(stored=True)           # author of page
         )
         from whoosh.index import create_in
         create_in(index_dir, schema)
-        print(f"Whoosh-Index wurde im Verzeichnis '{index_dir}' erstellt.")
+        print(f"Whoosh-Index was created in '{index_dir}'.")
     else:
-        print(f"Indexverzeichnis '{index_dir}' existiert bereits.")
+        print(f"The index '{index_dir}' already exists.")
     return index_dir
 
-# Funktion zum Crawlen und Indexieren
+# function to crawl and index web pages
 def crawl_and_index():
-    # Stelle sicher, dass der Index existiert
+    # make sure the index exists
     index_dir = create_index()
     ix = open_dir(index_dir)
 
-    # Crawler-Logik
+    # Crawler-Logic
     stack = [start_url]
     visited = set()
 
@@ -48,19 +48,19 @@ def crawl_and_index():
                     if response.status_code == 200:
                         soup = BeautifulSoup(response.content, "html.parser")
 
-                        # Daten sammeln
+                        # collect data
                         title = soup.title.string if soup.title else "No Title"
                         content = soup.get_text()
                         date_text = soup.date.string if soup.date else "No Date"
                         author = soup.author.string if soup.author else  "No Author"
 
-                        # Umwandlung von date_text in ein datetime-Objekt 
+                        # turn date_time into a datetime-object 
                         try: 
                             date = datetime.strptime(date_text, "%Y-%m-%d") 
                         except ValueError: 
-                            date = datetime.utcnow() # Fallback, falls das Datum nicht korrekt ist
+                            date = datetime.utcnow() # Fallback, if date is not correct
 
-                        # Zum Index hinzufügen
+                        # add to the index
                         writer.update_document(
                             url=url,
                             title=title,
@@ -68,19 +68,19 @@ def crawl_and_index():
                             date=date,
                             author=author
                         )
-                        print(f"Indexiert: {url}")
+                        print(f"Indexed: {url}")
 
-                        # Links sammeln
+                        # collect links of the pages
                         for link in soup.find_all("a", href=True):
                             href = link["href"]
-                            #href.startswith(prefix) and href not in visited:
-                            stack.append(prefix + href)     # prefix + page1.html u.ä.
-
+                            if href.startswith(prefix) and href not in visited:
+                                stack.append(href)     # page 4
+                            else:
+                                stack.append(prefix + href)  # prefix + page 1... (uni site: error: max recursion depth exceeded)
+                            
                         visited.add(url) 
                 except Exception as e:
-                    print(f"Fehler beim Abrufen der URL {url}: {e}")
-
-    print("Crawling und Indexierung abgeschlossen.")
+                    print(f"Error when calling the URL: {url}: {e}")
 
 if __name__ == "__main__":
     crawl_and_index()
