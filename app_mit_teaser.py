@@ -3,7 +3,7 @@ from whoosh.index import open_dir
 from whoosh.qparser import QueryParser
 import os
 import re
-
+from spellchecker import SpellChecker
 
 app = Flask(__name__)
 
@@ -20,25 +20,36 @@ def get_index():
 def index():
     return render_template('temp.html')
 
-
 # extracting full sentence with searched word 
 def extract_sentence(text, query):
     pattern = r'([^.]*?{}[^.]*\.)'.format(re.escape(query)) 
     matches = re.findall(pattern, text, re.IGNORECASE) 
     return matches[0] if matches else "No relevant sentence found."
 
+# suggest query corrections
+def suggest_correction(query):
+    spell = SpellChecker()
+    corrected_words = [spell.correction(word) for word in query.split()]
+    corrected_query = ' '.join(corrected_words)
+    return corrected_query
+
 # search route that uses searched word and shows information
 @app.route('/search', methods=['POST'])
 def search():
     query = request.form.get('query')  # searched word input
+    corrected_query = suggest_correction(query)
     try:
         ix = get_index()
         # searching index
         with ix.searcher() as searcher:
-            query_obj = QueryParser("content", ix.schema).parse(query)
+            query_obj = QueryParser("content", ix.schema).parse(corrected_query)
             results = searcher.search(query_obj)
+
             # HTML-results
-            results_html = f"<h1>Search results for: {query}</h1><ul>"
+            results_html = f"<h1>Search results for: {query}</h1>"
+            if corrected_query != query:
+                results_html += f"<p>Did you mean: <a href='/search?query={corrected_query}'>{corrected_query}</a>?</p>"
+            results_html += "<ul>"
         
             for result in results:
                 url = result["url"]
