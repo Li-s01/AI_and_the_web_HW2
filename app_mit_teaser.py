@@ -22,9 +22,21 @@ def index():
 
 # extracting full sentence with searched word 
 def extract_sentence(text, query):
-    pattern = r'([^.]*?{}[^.]*\.)'.format(re.escape(query)) 
-    matches = re.findall(pattern, text, re.IGNORECASE) 
-    return matches[0] if matches else "No relevant sentence found."
+    pattern = r'([^.]*?{}[^.]*\.)'.format(re.escape(query))
+    matches = re.findall(pattern, text, re.IGNORECASE)
+    
+    # Define unwanted initial phrases
+    unwanted_phrases = ["Home Page", "Page \d+", "This is Page \d+"]
+
+    # Filter out unwanted repetitive phrases and initial phrases
+    filtered_matches = []
+    for match in matches:
+        filtered_match = match
+        for phrase in unwanted_phrases:
+            filtered_match = re.sub(r'^\s*' + phrase + r'\s*', '', filtered_match, flags=re.IGNORECASE)  # Removes the unwanted phrase at the beginning
+        filtered_matches.append(filtered_match.strip())
+    
+    return filtered_matches[0] if filtered_matches else "No relevant sentence found."
 
 # suggest query corrections
 def suggest_correction(query):
