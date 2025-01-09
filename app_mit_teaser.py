@@ -18,7 +18,63 @@ def get_index():
 # home page of search engine with search field
 @app.route('/')
 def index():
-    return render_template('temp.html')
+    return """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Search Engine</title>
+        <style>
+            body {
+                background-image: url('https://images.pexels.com/photos/1809644/pexels-photo-1809644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                height: 100vh;
+                margin: 0;
+                overflow: hidden;
+                font-family: Arial, sans-serif;
+                color: white;
+                text-align: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+            }
+            h1 {
+                font-size: 70px;
+                margin-bottom: 2px;
+            }
+            form {
+                margin-top: 80px;
+            }
+            input[type="text"] {
+                padding: 15px;
+                width: 600px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+            button {
+                padding: 10px 20px;
+                border: none;
+                background-color: #007BFF;
+                color: white;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            button:hover {
+                background-color: #0056b3;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Search Engine</h1>
+        <form action="/search" method="post">
+            <input type="text" name="query" placeholder="search term" required>
+            <button type="submit">Search</button>
+        </form>
+    </body>
+    </html>
+    """
 
 # extracting full sentence with searched word 
 def extract_sentence(text, query):
@@ -46,9 +102,13 @@ def suggest_correction(query):
     return corrected_query
 
 # search route that uses searched word and shows information
-@app.route('/search', methods=['POST'])
+@app.route('/search', methods=['POST', 'GET'])
 def search():
-    query = request.form.get('query')  # searched word input
+    if request.method == 'POST':
+        query = request.form.get('query')  # searched word input
+    else:
+        query = request.args.get('query')
+
     corrected_query = suggest_correction(query)
     try:
         ix = get_index()
@@ -65,10 +125,9 @@ def search():
         
             for result in results:
                 url = result["url"]
-                title = result["title"]
-                content = result.get("content", "") 
-                teaser = extract_sentence(content, query)
-                results_html += f'<li><a href="{url}">{title}</a><br>{teaser}</li>'
+                content = result.get("content", "")
+                teaser = extract_sentence(content, corrected_query)
+                results_html += f'<li><a href="{url}">{url}</a><br>{teaser}</li>'
             results_html += "</ul><a href='/'>back to search</a>"
 
             return results_html
@@ -80,3 +139,4 @@ def search():
 
 if __name__ == "__main__":
     app.run(debug=True, host="127.0.0.1", port=5001)
+
