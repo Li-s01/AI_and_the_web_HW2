@@ -1,15 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Suchergebnisse</title>
+    <title>Search Results</title>
+    <style>
+        body {
+            background-image: url('https://img.freepik.com/free-photo/abstract-plexus-blue-geometrical-shapes-connection-ai-generated-image_511042-595.jpg?t=st=1736502289~exp=1736505889~hmac=7ff99fe469d6fb20f0a32653acc8c9a1bb0ea0047c2b0de8d75408325d60a07d&w=2000');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 60px;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .results-container {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        a {
+            color: #1E90FF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .teaser {
+            font-size: 16px;
+            color: #cccccc;
+            margin-top: 5px;
+        }
+
+        .back-link {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .back-link a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>Suchergebnisse für: {{ query }}</h1>
-    <ul>
-        {% for result in results %}
-            <li><a href="{{ result }}">{{ result }}</a></li>
-        {% endfor %}
-    </ul>
-    <a href="/">Zurück zur Suche</a>
+    <h1>Search Results for: {{ query }}</h1>
+    <div class="results-container">
+        <ul>
+            {% for result in results %}
+                <li>
+                    <a href="{{ result.url }}">{{ result.title }}</a>
+                    <div class="teaser">{{ result.teaser }}</div>
+                </li>
+            {% else %}
+                <li>No results found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="back-link">
+        <a href="/">Back to Search</a>
+    </div>
 </body>
 </html>
