@@ -1,0 +1,105 @@
+Synapse search maschine 
+***
+## task for this project 
+***
+Task 2: Build a search engine
+
+Build a search engine with all four components:
+
+Crawler (must run independently from search!)
+Index
+Query parser and search algorithm
+User Frontend
+
+Demonstrate it by crawling one website and making its content available to the user via a web frontend with a simple search form. 
+
+Make the result available on the provided demo server.
+
+Submit the code and the link to the demo deployment.
+
+ 
+
+Grading criteria:
+
+- Does the solution cover all requirements from the project description? (5/5)
+- Is the solution deployed correctly? (2/2)
+- Is the solution properly documented? (Code comments + readme file) (1/1)
+- Does the solution include additional creative ideas (one search engine extra, one UI improvement, e.g., nice design, Usability improvements) (2/2)
+
+ 
+
+Suggested order of building:
+
+Week 1 of project:
+
+Create a working environment on your computers
+Create a repository (Gitlab, Github, …) for your project 2 and make sure all group members can access it
+Start with adding a .gitignore and a requirements.txt file to the repository (requirements are requests and beautifulsoup4)
+Create a `crawler.py` file and define the skeleton of the crawling algorithm: 
+Crawl (=get and parse) all HTML pages on a certain server 
+that can directly or indirectly be reached from a start URL 
+by following links on the pages. 
+Do not follow links to URLs on other servers and only process HTML responses. 
+Test the crawler with a simple website, e.g., https://vm009.rz.uos.de/crawl/index.html 
+Build an in-memory index from the HTML text content found. 
+The most straightforward index is a dictionary with words as keys and lists of URLs that refer to pages that include the word.
+Add a function 'search' that takes a list of words as a parameter and returns (by using the index) a list of links to all pages that contain all the words from the list. 
+Test the functionality.
+Don't worry if you don't get that far! Use the element chat and the Friday session to ask questions, report problems and tell about hurdles and obstacles!
+
+Week 2:
+
+Replace the simple index with code using the woosh library (https://whoosh.readthedocs.io/en/latest/intro.html ).
+Build a flask app (will be introduced in week 6) with two URLs that show the following behavior:
+GET home URL: Show search form
+GET search URL with parameter q: Search for q using the index and display a list of URLs as links
+Week 3:
+
+Improve the index by adding information
+Improve the output by including title and teaser text
+Install your search engine on the demo server provided 
+- describtion : 
+
+## General Info 
+***
+The search engine is a web application based on Flask. Users can enter search terms through a user-friendly interface, and the application searches the indexed content to display relevant results. The web crawler searches web pages, collects content, and stores it in a Whoosh database. Important information such as URL, title, content, publication date, and author are extracted and indexed.
+
+
+## Installation 
+***
+**Clone the repository:** 
+```bash git clone https://github.com/Li-s01/AI_and_the_web_HW2/tree/main
+cd AI_and_the_web_HW2
+``` 
+**Create a virtual environment and activate it:**
+ ```bash 
+ python -m venv venv 
+ source venv/bin/activate # On Windows, use `venv\Scripts\activate` ``` 
+**Install the dependencies:** 
+ ```bash 
+ pip install -r requirements.txt
+  ``` 
+**Run the application:** 
+```bash 
+python app.py
+ ```
+
+
+ ## Usage 
+ 1. **Access the search engine:** 
+ Open your web browser and navigate to `http://127.0.0.1:5001`. 
+ 2. **Enter a search term:** 
+ Type a word or phrase into the search field and press "Search."
+ 3. **View results:** 
+ The search results will display links and relevant sentences from the indexed documents.
+
+
+
+## Technologies 
+***
+A list of technologies used within the project :
+* [Flask](https://flask.palletsprojects.com/en/stable/installation/#install-flask)
+* [Whoosh](https://github.com/whoosh-community/whoosh)
+* [BeautifullSoup](https://pypi.org/project/beautifulsoup4/)
+* [SpellCheck](https://pypi.org/project/pyspellchecker/)3 
+* [Datetime](https://anaconda.org/trentonoliphant/datetime)
