@@ -3,8 +3,9 @@
 <head>
     <title>Synapse</title>
     <style>
+        /* General styling for the page */
         body {
-            background-image: url('https://img.freepik.com/free-photo/abstract-plexus-blue-geometrical-shapes-connection-ai-generated-image_511042-595.jpg?t=st=1736502289~exp=1736505889~hmac=7ff99fe469d6fb20f0a32653acc8c9a1bb0ea0047c2b0de8d75408325d60a07d&w=2000');
+            background-image: url('https://images.pexels.com/photos/6984984/pexels-photo-6984984.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -19,19 +20,21 @@
             flex-direction: column;
         }
 
+        /* Styling for the main title */
         h1 {
             font-size: 80px;
-            margin-bottom: 40px;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+            margin-bottom: 40px; /* Space below the title */
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7); /* Adds shadow for readability */
         }
 
+        /* Styling for the search form */
         form {
             display: flex;
             flex-direction: row;
-            align-items: center;
-            gap: 10px;
+            gap: 10px; /* Adds space between input and button */
         }
 
+        /* Styling for the search input field */
         input[type="text"] {
             padding: 15px;
             width: 500px;
@@ -39,14 +42,14 @@
             border-radius: 25px;
             background-color: rgba(0, 0, 0, 0.7);
             color: white;
-            font-size: 18px;
-            outline: none;
         }
 
+        /* Placeholder text styling */
         input[type="text"]::placeholder {
             color: rgba(255, 255, 255, 0.7);
         }
 
+        /* Styling for the search button */
         button {
             padding: 15px 30px;
             border: none;
@@ -60,18 +63,33 @@
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
+        /* Hover effect for the button */
         button:hover {
             background-color: #0056b3;
             transform: scale(1.05);
+        }
+
+        /* Wrapper to center the title and search form */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            top: -50px; /* Adjusts vertical positioning */
         }
         
     </style>
 </head>
 <body>
-    <h1>Synapse</h1>
-    <form action="/search" method="post" onsubmit="return true;">
-        <input type="text" name="query" placeholder="Enter your search term..." required>
-        <button type="submit">Search</button>
-    </form>
+    <!-- Wrapper contains the main title and search form -->
+    <div class="wrapper">
+        <!-- Main title -->
+        <h1>Synapse</h1>
+        <!-- Search form -->
+        <form action="/search" method="post" onsubmit="return true;">
+            <input type="text" name="query" placeholder="Enter your search term..." required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
 </body>
 </html>
