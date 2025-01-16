@@ -86,7 +86,7 @@
         <!-- Main title -->
         <h1>Synapse</h1>
         <!-- Search form -->
-        <form action="/search" method="post" onsubmit="return true;">
+        <form action="{{ url_for('search') }}" method="post" onsubmit="return true;">
             <input type="text" name="query" placeholder="Enter your search term..." required>
             <button type="submit">Search</button>
         </form>
