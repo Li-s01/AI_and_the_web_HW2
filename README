@@ -64,6 +64,9 @@ Install your search engine on the demo server provided
 ***
 The search engine is a web application based on Flask. Users can enter search terms through a user-friendly interface, and the application searches the indexed content to display relevant results. The web crawler searches web pages, collects content, and stores it in a Whoosh database. Important information such as URL, title, content, publication date, and author are extracted and indexed.
 
+## Code Info
+***
+The 'crawler.py' file creates a local indexdir with the documents. Based on this indexdir, the flask app 'webapp.py' operates. The file 'search_crawler.py' was the original week 1 crawler algorithm that can also do a search, but in the local terminal. We did not continue using that file for the actual deployment, but kept the logic behind it. 
 
 ## Installation 
 ***
@@ -81,11 +84,11 @@ cd AI_and_the_web_HW2
   ``` 
 **Run the application:** 
 ```bash 
-python app.py
+python3 webapp.py
  ```
 
 
- ## Usage 
+ ## Local Usage 
  1. **Access the search engine:** 
  Open your web browser and navigate to `http://127.0.0.1:5001`. 
  2. **Enter a search term:** 
@@ -93,6 +96,16 @@ python app.py
  3. **View results:** 
  The search results will display links and relevant sentences from the indexed documents.
 
+## External Usage
+1. **Connect to the University of Osnabrück server:**
+You can use eduroam VPN from home.
+2. **Enter the URL:**
+http://vm150.rz.uni-osnabrueck.de/u097/AI_and_the_web_HW2/webapp.wsgi
+3. **Enter your search term:**
+Type in a word or phrase to the search field and press enter or "Search".
+4. **View results:**
+If you mistyped your word, the engine will give you a suggestion that you can click on and then get the results for that word. 
+The results page will display links and relevant sentences from the indexed documents that you can click on or start a new search.
 
 
 ## Technologies 
@@ -103,3 +116,5 @@ A list of technologies used within the project :
 * [BeautifullSoup](https://pypi.org/project/beautifulsoup4/)
 * [SpellCheck](https://pypi.org/project/pyspellchecker/)3 
 * [Datetime](https://anaconda.org/trentonoliphant/datetime)
+* [Requests](https://github.com/psf/requests)
+
