@@ -9,7 +9,7 @@ import os
 prefix = 'https://vm009.rz.uos.de/crawl/'
 start_url = prefix + 'index.html'
 
-# creating index if not already existing, and schema
+# creating index if not already existing, and creating the schema
 def create_index():
     index_dir = "indexdir"
     if not os.path.exists(index_dir):
